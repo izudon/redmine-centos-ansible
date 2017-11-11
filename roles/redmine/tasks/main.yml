@@ -144,3 +144,17 @@
     RAILS_ENV: production
   when:
     result_database_yml|changed
+
+- name: デフォルトのプロトコルを HTTPS
+  become: yes
+  command:
+    bundle exec rails r 'Setting["protocol"]="https"'
+    chdir={{ redmine_dir }}
+  environment:
+    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+    RAILS_ENV: production
+  when:
+    result_database_yml|changed
+
+
+

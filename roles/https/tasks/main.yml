@@ -1,0 +1,47 @@
+- name: certbot, certbot-apache のインストール
+  become: yes
+  yum: name='certbot,certbot-apache'
+
+#- name: certbotの実行
+#  become: yes
+#  command:
+#    certbot --non-interactive --apache -d {{ ssl_certificate_domain }}
+
+- name: certbot renew を cron 登録
+  become: yes
+  cron:
+    name: "certbot nenew"
+    minute: 45
+    hour: 3
+    job: certbot renew --non-interactive --deploy-hook "service httpd reload"
+
+- name: httpdの再起動
+  become: yes
+  service:
+    name=httpd
+    state=restarted
+    enabled=yes
+
+- name: firewalldが起動しているか確認
+  become: yes
+  shell: firewall-cmd --state
+  register: firewall_state
+  ignore_errors: yes
+  changed_when: false
+  check_mode: no
+
+- name: firewalldでHTTPSを許可
+  become: yes
+  command: firewall-cmd --zone=public --add-service=https --permanent
+  when: firewall_state.rc == 0
+
+- name: firewalldでHTTPを禁止
+  become: yes
+  command: firewall-cmd --zone=public --remove-service=http --permanent
+  when: firewall_state.rc == 0
+
+- name: firewalldのポリシーをリロード
+  become: yes
+  command: firewall-cmd --reload
+  when: firewall_state.rc == 0
+

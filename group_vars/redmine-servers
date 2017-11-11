@@ -2,6 +2,9 @@
 # データベースの redmine ユーザーのパスワード (変更推奨)
 db_passwd_redmine: Must_be_changed!
 # ----------------------------------------------------------------------
+# SSL証明書のホスト名
+ssl_certificate_domain: sample.example.local
+# ----------------------------------------------------------------------
 
 # Redmineのチェックアウト元URL
 redmine_svn_url: http://svn.redmine.org/redmine/branches/3.4-stable
