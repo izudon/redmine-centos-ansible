@@ -84,10 +84,16 @@
     repo=https://github.com/farend/redmine_theme_farend_basic.git
     dest={{ redmine_dir }}/public/themes/farend_basic
 
-- name: テーマをfarend_basicに切り替え
+- name: farend_fancyテーマのダウンロード
+  become: yes
+  git:
+    repo=https://github.com/farend/redmine_theme_farend_fancy.git
+    dest={{ redmine_dir }}/public/themes/farend_fancy
+
+- name: テーマをfarend_fancyに切り替え
   become: yes
   command:
-    bundle exec rails r 'Setting["ui_theme"]="farend_basic"'
+    bundle exec rails r 'Setting["ui_theme"]="farend_fancy"'
     chdir={{ redmine_dir }}
   environment:
     PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
