@@ -159,7 +159,7 @@
 - name: デフォルトのテキストフォーマットを Textile -> Markdown
   become: yes
   command:
-    bundle exec rails r 'Setting["test_formatting"]="markdown"'
+    bundle exec rails r 'Setting["text_formatting"]="markdown"'
     chdir={{ redmine_dir }}
   environment:
     PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
